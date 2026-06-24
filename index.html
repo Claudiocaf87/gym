@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <style>
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:#111111;color:#fff;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+    ::selection{background:#DCFF31;color:#111}
+    input,select,button,textarea{font-family:inherit}
+    @keyframes dcReveal{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+    [data-reveal]{opacity:1!important;transform:none!important;animation:dcReveal .7s ease both}
+    .wrap{max-width:1200px;margin:0 auto}
+    .nav-links{display:flex;gap:30px;align-items:center}
+    .nav-burger{display:none;background:none;border:0;cursor:pointer;padding:8px;flex-direction:column;gap:5px}
+    .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+    .sch-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:24px}
+    .test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .contact-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
+    .hero-bg{position:absolute;inset:0;background-image:url('assets/hero.jpg');background-size:cover;background-position:62% center}
+    .svc-feat{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    @media(max-width:920px){
+      .why-grid,.svc-grid,.plans-grid,.test-grid,.svc-feat{grid-template-columns:1fr}
+      .sch-grid,.contact-grid,.form-row,.foot-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:860px){
+      .nav-links{display:none}
+      .nav-burger{display:flex}
+    }
+    @media(max-width:700px){
+      .hero-bg{background-image:url('assets/hero-mobile.jpg');background-position:center 14%}
+    }
+  </style>
+</helmet>
+
+<div style="background:#111111">
+
+  <nav id="site-nav" style="position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:11px clamp(16px,4vw,40px);border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(17,17,17,0.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:background .3s ease,border-color .3s ease">
+    <a href="#inicio" style="display:flex;align-items:center;gap:11px;text-decoration:none;flex:none">
+      <img src="assets/logo.png" alt="Macizo Gym" style="height:42px;width:42px;border-radius:50%;display:block" />
+      <span style="font-family:Oswald,sans-serif;font-weight:700;letter-spacing:0.04em;color:#fff;font-size:18px">MACIZO <span style="color:#DCFF31">GYM</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#inicio" style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;font-size:13px;color:#fff;text-decoration:none;opacity:.85">Inicio</a>
+      <a href="#planes" style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;font-size:13px;color:#fff;text-decoration:none;opacity:.85">Planes</a>
+      <a href="#servicios" style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;font-size:13px;color:#fff;text-decoration:none;opacity:.85">Servicios</a>
+      <a href="#horarios" style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;font-size:13px;color:#fff;text-decoration:none;opacity:.85">Horarios</a>
+      <a href="#contacto" style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;font-size:13px;color:#fff;text-decoration:none;opacity:.85">Contacto</a>
+      <a href="#reservar" style="font-family:Oswald,sans-serif;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;font-size:13px;color:#111;background:#DCFF31;text-decoration:none;padding:11px 20px;border-radius:4px" style-hover="background:#e7ff5c;transform:translateY(-1px)">Reservar clase</a>
+    </div>
+    <button class="nav-burger" onClick="{{ toggleMenu }}" aria-label="Abrir menú">
+      <span style="display:block;width:24px;height:2px;background:#fff"></span>
+      <span style="display:block;width:24px;height:2px;background:#fff"></span>
+      <span style="display:block;width:24px;height:2px;background:#DCFF31"></span>
+    </button>
+  </nav>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:70;background:rgba(10,10,10,0.97);backdrop-filter:blur(8px);display:flex;flex-direction:column;padding:24px clamp(16px,4vw,40px)">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-family:Oswald,sans-serif;font-weight:700;letter-spacing:0.04em;color:#fff;font-size:18px">MACIZO <span style="color:#DCFF31">GYM</span></span>
+        <button onClick="{{ toggleMenu }}" aria-label="Cerrar menú" style="background:none;border:0;color:#fff;font-size:30px;cursor:pointer;line-height:1;font-family:Oswald,sans-serif">×</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:48px">
+        <a href="#inicio" onClick="{{ closeMenu }}" style="font-family:Anton,sans-serif;font-size:34px;letter-spacing:-0.01em;text-transform:uppercase;color:#fff;text-decoration:none;padding:8px 0">Inicio</a>
+        <a href="#planes" onClick="{{ closeMenu }}" style="font-family:Anton,sans-serif;font-size:34px;letter-spacing:-0.01em;text-transform:uppercase;color:#fff;text-decoration:none;padding:8px 0">Planes</a>
+        <a href="#servicios" onClick="{{ closeMenu }}" style="font-family:Anton,sans-serif;font-size:34px;letter-spacing:-0.01em;text-transform:uppercase;color:#fff;text-decoration:none;padding:8px 0">Servicios</a>
+        <a href="#horarios" onClick="{{ closeMenu }}" style="font-family:Anton,sans-serif;font-size:34px;letter-spacing:-0.01em;text-transform:uppercase;color:#fff;text-decoration:none;padding:8px 0">Horarios</a>
+        <a href="#contacto" onClick="{{ closeMenu }}" style="font-family:Anton,sans-serif;font-size:34px;letter-spacing:-0.01em;text-transform:uppercase;color:#fff;text-decoration:none;padding:8px 0">Contacto</a>
+      </div>
+      <a href="#reservar" onClick="{{ closeMenu }}" style="margin-top:auto;text-align:center;font-family:Oswald,sans-serif;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;font-size:16px;color:#111;background:#DCFF31;text-decoration:none;padding:18px;border-radius:4px">Reservar clase</a>
+    </div>
+  </sc-if>
+
+  <!-- ============ HERO ============ -->
+  <header id="inicio" style="position:relative;min-height:100svh;display:flex;align-items:flex-start;overflow:hidden;scroll-margin-top:0">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(96deg, rgba(10,10,10,0.93) 0%, rgba(10,10,10,0.62) 44%, rgba(10,10,10,0.22) 100%), linear-gradient(0deg, rgba(17,17,17,0.97) 0%, rgba(17,17,17,0.35) 52%, rgba(17,17,17,0.12) 100%)"></div>
+
+    <div class="wrap" style="position:relative;width:100%;padding:clamp(118px,16vh,170px) clamp(16px,4vw,40px) clamp(48px,7vw,84px)">
+      <div style="max-width:880px">
+        <div data-reveal style="opacity:0;transform:translateY(24px);display:inline-flex;align-items:center;gap:10px;font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.28em;text-transform:uppercase;font-size:13px;color:#DCFF31;margin-bottom:22px">
+          <span style="display:inline-block;width:30px;height:2px;background:#DCFF31"></span>Neuquén · Musculación · Fuerza
+        </div>
+        <h1 data-reveal style="opacity:0;transform:translateY(24px);font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:#fff;font-size:clamp(50px,10vw,124px);line-height:0.9;letter-spacing:-0.02em;margin:0">Acá no se viene<br/>a mirar.</h1>
+        <p data-reveal style="opacity:0;transform:translateY(24px);max-width:560px;color:rgba(255,255,255,0.7);font-size:clamp(16px,2.2vw,19px);line-height:1.6;margin:26px 0 0;font-weight:400">Musculación y powerlifting de verdad en el corazón de Neuquén. Equipamiento serio, comunidad que entrena pesado y cero pretensiones boutique. Vení a ponerte macizo.</p>
+        <div data-reveal style="opacity:0;transform:translateY(24px);display:flex;flex-wrap:wrap;gap:14px;margin-top:34px">
+          <a href="#planes" style="display:inline-flex;align-items:center;gap:10px;font-family:Oswald,sans-serif;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;font-size:15px;color:#111;background:#DCFF31;text-decoration:none;padding:17px 32px;border-radius:4px;transition:transform .2s ease,box-shadow .2s ease" style-hover="transform:translateY(-2px);box-shadow:0 14px 40px rgba(220,255,49,0.32)">Quiero entrenar →</a>
+          <a href="#horarios" style="display:inline-flex;align-items:center;font-family:Oswald,sans-serif;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;font-size:15px;color:#fff;background:transparent;text-decoration:none;padding:16px 30px;border-radius:4px;border:1.5px solid rgba(255,255,255,0.45);transition:border-color .2s ease,color .2s ease" style-hover="border-color:#DCFF31;color:#DCFF31">Ver horarios</a>
+        </div>
+      </div>
+
+      <!-- SCOREBOARD signature -->
+      <div data-reveal style="opacity:0;transform:translateY(24px);margin-top:clamp(40px,5vw,56px);display:inline-block;background:linear-gradient(180deg,#0c0c0c,#141414);border:1px solid rgba(220,255,49,0.22);border-radius:6px;padding:20px 28px;box-shadow:0 24px 60px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.04)">
+        <div style="display:flex;align-items:center;gap:9px;font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;font-size:11px;color:#6B6B6B">
+          <span style="width:7px;height:7px;border-radius:50%;background:#DCFF31;box-shadow:0 0 10px #DCFF31"></span>En vivo · Kilos levantados hoy por la comunidad
+        </div>
+        <div style="display:flex;align-items:baseline;gap:12px;margin-top:8px">
+          <span style="font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(46px,9vw,84px);color:#DCFF31;letter-spacing:0.01em;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 0 30px rgba(220,255,49,0.4)">{{ kilosDisplay }}</span>
+          <span style="font-family:Oswald,sans-serif;font-weight:600;font-size:clamp(20px,3vw,30px);color:#fff;letter-spacing:0.04em">KG</span>
+        </div>
+        <div style="font-family:Oswald,sans-serif;font-weight:400;letter-spacing:0.16em;text-transform:uppercase;font-size:10px;color:#555;margin-top:4px">Marcador comunidad macizo · actualizado al cierre del día</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ MANIFIESTO ============ -->
+  <section style="position:relative;padding:clamp(80px,11vw,150px) clamp(20px,5vw,80px);background:linear-gradient(rgba(12,12,12,0.9),rgba(12,12,12,0.94)),url('assets/local.jpg') center/cover;border-top:1px solid rgba(255,255,255,0.05)">
+    <div class="wrap" data-reveal style="opacity:0;transform:translateY(24px);max-width:920px;text-align:center;margin:0 auto">
+      <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.3em;text-transform:uppercase;font-size:12px;color:#DCFF31;margin-bottom:24px">El manifiesto</div>
+      <p style="font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:#fff;font-size:clamp(28px,5.2vw,64px);line-height:1.04;letter-spacing:-0.01em;margin:0;text-wrap:balance">No somos una cadena. No vendemos wellness. Acá la única moneda es el <span style="color:#DCFF31">trabajo pesado</span> y la constancia.</p>
+      <p style="max-width:620px;margin:30px auto 0;color:#6B6B6B;font-size:17px;line-height:1.65">Macizo Gym existe para la gente que entrena en serio. Sin filas, sin poses, sin música de ascensor. Hierro, técnica y una comunidad que te empuja a levantar más de lo que creías posible.</p>
+    </div>
+  </section>
+
+  <!-- ============ POR QUÉ MACIZO (white) ============ -->
+  <section style="padding:clamp(72px,9vw,120px) clamp(20px,5vw,80px);background:#fff">
+    <div class="wrap">
+      <div data-reveal style="opacity:0;transform:translateY(24px);max-width:720px;margin-bottom:54px">
+        <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.28em;text-transform:uppercase;font-size:12px;color:#111;margin-bottom:16px">Por qué Macizo</div>
+        <h2 style="font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:#111;font-size:clamp(34px,6vw,68px);line-height:0.95;letter-spacing:-0.02em;margin:0">Tres razones.<br/>Cero excusas.</h2>
+      </div>
+      <div class="why-grid">
+        <div data-reveal style="opacity:0;transform:translateY(24px);border-top:2px solid #111;padding-top:24px">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="21" r="5.5"/><circle cx="32" cy="21" r="5.5"/><line x1="15.5" y1="21" x2="26.5" y2="21"/><line x1="10" y1="13" x2="10" y2="29"/><line x1="32" y1="13" x2="32" y2="29"/></svg>
+          <h3 style="font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.01em;color:#111;font-size:23px;margin:18px 0 8px">Fierro de verdad</h3>
+          <p style="color:#6B6B6B;font-size:15.5px;line-height:1.6;margin:0">Barras olímpicas, racks de potencia, plataformas de peso muerto y discos calibrados. Equipo para entrenar pesado, no para la foto.</p>
+        </div>
+        <div data-reveal style="opacity:0;transform:translateY(24px);border-top:2px solid #DCFF31;padding-top:24px">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round"><circle cx="16" cy="18" r="6"/><circle cx="28" cy="22" r="6"/></svg>
+          <h3 style="font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.01em;color:#111;font-size:23px;margin:18px 0 8px">Coaching que sabe</h3>
+          <p style="color:#6B6B6B;font-size:15.5px;line-height:1.6;margin:0">Entrenadores certificados en fuerza y powerlifting. Te corrigen la técnica, te programan y te bancan en cada serie pesada.</p>
+        </div>
+        <div data-reveal style="opacity:0;transform:translateY(24px);border-top:2px solid #111;padding-top:24px">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round"><circle cx="21" cy="21" r="13"/><line x1="21" y1="21" x2="21" y2="13"/><line x1="21" y1="21" x2="28" y2="24"/></svg>
+          <h3 style="font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.01em;color:#111;font-size:23px;margin:18px 0 8px">Horario que aguanta</h3>
+          <p style="color:#6B6B6B;font-size:15.5px;line-height:1.6;margin:0">Abierto de 6 a 23 hs. Entrenás temprano o tarde, sin esperas para usar el rack. Tu rutina manda, no la fila.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICIOS ============ -->
+  <section id="servicios" style="padding:clamp(72px,9vw,120px) clamp(20px,5vw,80px);background:#111;scroll-margin-top:72px">
+    <div class="wrap">
+      <div data-reveal style="opacity:0;transform:translateY(24px);max-width:720px;margin-bottom:48px">
+        <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.28em;text-transform:uppercase;font-size:12px;color:#DCFF31;margin-bottom:16px">Servicios</div>
+        <h2 style="font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:#fff;font-size:clamp(34px,6vw,68px);line-height:0.95;letter-spacing:-0.02em;margin:0">Todo lo que necesitás para crecer</h2>
+      </div>
+      <div class="svc-feat">
+        <div data-reveal style="opacity:0;transform:translateY(24px);position:relative;border-radius:6px;overflow:hidden;min-height:300px;background:url('assets/svc-pesas.jpg') center/cover">
+          <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,10,10,0.86) 0%,rgba(10,10,10,0.12) 58%,transparent 100%)"></div>
+          <div style="position:absolute;left:26px;right:26px;bottom:24px">
+            <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;font-size:11px;color:#DCFF31;margin-bottom:7px">Pesas y musculación</div>
+            <div style="font-family:Anton,sans-serif;text-transform:uppercase;color:#fff;font-size:clamp(22px,3vw,28px);line-height:1;letter-spacing:-0.01em">Fierro para todos los niveles</div>
+          </div>
+        </div>
+        <div data-reveal style="opacity:0;transform:translateY(24px);position:relative;border-radius:6px;overflow:hidden;min-height:300px;background:url('assets/svc-funcional.jpg') center/cover">
+          <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,10,10,0.86) 0%,rgba(10,10,10,0.12) 58%,transparent 100%)"></div>
+          <div style="position:absolute;left:26px;right:26px;bottom:24px">
+            <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;font-size:11px;color:#DCFF31;margin-bottom:7px">Clases grupales</div>
+            <div style="font-family:Anton,sans-serif;text-transform:uppercase;color:#fff;font-size:clamp(22px,3vw,28px);line-height:1;letter-spacing:-0.01em">Funcional macizo en grupo</div>
+          </div>
+        </div>
+      </div>
+      <div class="svc-grid">
+        <article data-reveal style="opacity:0;transform:translateY(24px);background:#1C1C1C;border:1px solid rgba(255,255,255,0.06);border-radius:5px;padding:28px;transition:border-color .25s ease,transform .25s ease" style-hover="border-color:#DCFF31;transform:translateY(-4px)">
+          <span style="font-family:Oswald,sans-serif;font-weight:500;color:#DCFF31;font-size:13px;letter-spacing:0.1em">01</span>
+          <h3 style="font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;color:#fff;font-size:20px;margin:10px 0 8px">Musculación libre</h3>
+          <p style="color:#8a8a8a;font-size:15px;line-height:1.6;margin:0">Sala completa de máquinas y peso libre para todo el cuerpo, sin límite de tiempo.</p>
+        </article>
+        <article data-reveal style="opacity:0;transform:translateY(24px);background:#1C1C1C;border:1px solid rgba(255,255,255,0.06);border-radius:5px;padding:28px;transition:border-color .25s ease,transform .25s ease" style-hover="border-color:#DCFF31;transform:translateY(-4px)">
+          <span style="font-family:Oswald,sans-serif;font-weight:500;color:#DCFF31;font-size:13px;letter-spacing:0.1em">02</span>
+          <h3 style="font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;color:#fff;font-size:20px;margin:10px 0 8px">Zona de powerlifting</h3>
+          <p style="color:#8a8a8a;font-size:15px;line-height:1.6;margin:0">Barras olímpicas, racks, banco de competición y plataformas para sentadilla, banca y peso muerto.</p>
+        </article>
+        <article data-reveal style="opacity:0;transform:translateY(24px);background:#1C1C1C;border:1px solid rgba(255,255,255,0.06);border-radius:5px;padding:28px;transition:border-color .25s ease,transform .25s ease" style-hover="border-color:#DCFF31;transform:translateY(-4px)">
+          <span style="font-family:Oswald,sans-serif;font-weight:500;color:#DCFF31;font-size:13px;letter-spacing:0.1em">03</span>
+          <h3 style="font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;color:#fff;font-size:20px;margin:10px 0 8px">Entrenamiento personal</h3>
+          <p style="color:#8a8a8a;font-size:15px;line-height:1.6;margin:0">Programación uno a uno con entrenador asignado, ajustada a tu objetivo y tu nivel.</p>
+        </article>
+        <article data-reveal style="opacity:0;transform:translateY(24px);background:#1C1C1C;border:1px solid rgba(255,255,255,0.06);border-radius:5px;padding:28px;transition:border-color .25s ease,transform .25s ease" style-hover="border-color:#DCFF31;transform:translateY(-4px)">
+          <span style="font-family:Oswald,sans-serif;font-weight:500;color:#DCFF31;font-size:13px;letter-spacing:0.1em">04</span>
+          <h3 style="font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;color:#fff;font-size:20px;margin:10px 0 8px">Clases grupales</h3>
+          <p style="color:#8a8a8a;font-size:15px;line-height:1.6;margin:0">Funcional Macizo y Powerlifting Class en grupos reducidos, con técnica supervisada.</p>
+        </article>
+        <article data-reveal style="opacity:0;transform:translateY(24px);background:#1C1C1C;border:1px solid rgba(255,255,255,0.06);border-radius:5px;padding:28px;transition:border-color .25s ease,transform .25s ease" style-hover="border-color:#DCFF31;transform:translateY(-4px)">
+          <span style="font-family:Oswald,sans-serif;font-weight:500;color:#DCFF31;font-size:13px;letter-spacing:0.1em">05</span>
+          <h3 style="font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;color:#fff;font-size:20px;margin:10px 0 8px">Nutrición y seguimiento</h3>
+          <p style="color:#8a8a8a;font-size:15px;line-height:1.6;margin:0">Evaluación inicial, plan alimentario y control de progreso para que el esfuerzo rinda.</p>
+        </article>
+        <article data-reveal style="opacity:0;transform:translateY(24px);background:#1C1C1C;border:1px solid rgba(255,255,255,0.06);border-radius:5px;padding:28px;transition:border-color .25s ease,transform .25s ease" style-hover="border-color:#DCFF31;transform:translateY(-4px)">
+          <span style="font-family:Oswald,sans-serif;font-weight:500;color:#DCFF31;font-size:13px;letter-spacing:0.1em">06</span>
+          <h3 style="font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;color:#fff;font-size:20px;margin:10px 0 8px">Vestuarios y duchas</h3>
+          <p style="color:#8a8a8a;font-size:15px;line-height:1.6;margin:0">Vestuarios amplios con lockers y duchas con agua caliente. Entrás, entrenás, seguís tu día.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PLANES ============ -->
+  <section id="planes" style="padding:clamp(72px,9vw,120px) clamp(20px,5vw,80px);background:#111;border-top:1px solid rgba(255,255,255,0.05);scroll-margin-top:72px">
+    <div class="wrap">
+      <div data-reveal style="opacity:0;transform:translateY(24px);max-width:720px;margin-bottom:50px">
+        <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.28em;text-transform:uppercase;font-size:12px;color:#DCFF31;margin-bottom:16px">Planes y precios</div>
+        <h2 style="font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:#fff;font-size:clamp(34px,6vw,68px);line-height:0.95;letter-spacing:-0.02em;margin:0">Elegí tu nivel</h2>
+      </div>
+      <div class="plans-grid">
+        <!-- Básico -->
+        <article data-reveal style="opacity:0;transform:translateY(24px);background:#1C1C1C;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:32px 28px;display:flex;flex-direction:column">
+          <div style="font-family:Oswald,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#fff;font-size:15px">Básico</div>
+          <div style="display:flex;align-items:baseline;gap:6px;margin:18px 0 4px"><span style="font-family:Anton,sans-serif;color:#fff;font-size:46px;line-height:1">$45.000</span></div>
+          <div style="font-family:Oswald,sans-serif;color:#6B6B6B;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:24px">por mes</div>
+          <ul style="list-style:none;padding:0;margin:0 0 28px;display:flex;flex-direction:column;gap:12px;flex:1">
+            <li style="display:flex;gap:10px;color:#cfcfcf;font-size:15px;line-height:1.4"><span style="color:#DCFF31">—</span>Acceso a sala de musculación</li>
+            <li style="display:flex;gap:10px;color:#cfcfcf;font-size:15px;line-height:1.4"><span style="color:#DCFF31">—</span>Horario diurno (6 a 16 hs)</li>
+            <li style="display:flex;gap:10px;color:#cfcfcf;font-size:15px;line-height:1.4"><span style="color:#DCFF31">—</span>Rutina base inicial</li>
+            <li style="display:flex;gap:10px;color:#555;font-size:15px;line-height:1.4"><span>—</span>Clases grupales</li>
+          </ul>
+          <a href="#reservar" style="text-align:center;font-family:Oswald,sans-serif;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;font-size:14px;color:#fff;background:transparent;text-decoration:none;padding:14px;border-radius:4px;border:1.5px solid rgba(255,255,255,0.3);transition:border-color .2s,color .2s" style-hover="border-color:#DCFF31;color:#DCFF31">Empezar</a>
+        </article>
+        <!-- Macizo destacado -->
+        <article data-reveal style="opacity:0;transform:translateY(24px);background:linear-gradient(180deg,#161616,#1C1C1C);border:2px solid #DCFF31;border-radius:6px;padding:32px 28px;display:flex;flex-direction:column;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.45)">
+          <span style="position:absolute;top:-13px;left:28px;background:#DCFF31;color:#111;font-family:Oswald,sans-serif;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;font-size:11px;padding:6px 14px;border-radius:3px">El más elegido</span>
+          <div style="font-family:Oswald,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#DCFF31;font-size:15px">Macizo</div>
+          <div style="display:flex;align-items:baseline;gap:6px;margin:18px 0 4px"><span style="font-family:Anton,sans-serif;color:#fff;font-size:52px;line-height:1">$66.000</span></div>
+          <div style="font-family:Oswald,sans-serif;color:#6B6B6B;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:24px">por mes</div>
+          <ul style="list-style:none;padding:0;margin:0 0 28px;display:flex;flex-direction:column;gap:12px;flex:1">
+            <li style="display:flex;gap:10px;color:#fff;font-size:15px;line-height:1.4"><span style="color:#DCFF31">✕</span>Acceso full horario (6 a 23 hs)</li>
+            <li style="display:flex;gap:10px;color:#fff;font-size:15px;line-height:1.4"><span style="color:#DCFF31">✕</span>2 clases grupales por semana</li>
+            <li style="display:flex;gap:10px;color:#fff;font-size:15px;line-height:1.4"><span style="color:#DCFF31">✕</span>Evaluación inicial completa</li>
+            <li style="display:flex;gap:10px;color:#fff;font-size:15px;line-height:1.4"><span style="color:#DCFF31">✕</span>Zona de powerlifting incluida</li>
+          </ul>
+          <a href="#reservar" style="text-align:center;font-family:Oswald,sans-serif;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;font-size:14px;color:#111;background:#DCFF31;text-decoration:none;padding:14px;border-radius:4px;transition:transform .2s,box-shadow .2s" style-hover="transform:translateY(-2px);box-shadow:0 12px 32px rgba(220,255,49,0.3)">Ponerme macizo</a>
+        </article>
+        <!-- Elite -->
+        <article data-reveal style="opacity:0;transform:translateY(24px);background:#1C1C1C;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:32px 28px;display:flex;flex-direction:column">
+          <div style="font-family:Oswald,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#fff;font-size:15px">Elite</div>
+          <div style="display:flex;align-items:baseline;gap:6px;margin:18px 0 4px"><span style="font-family:Anton,sans-serif;color:#fff;font-size:46px;line-height:1">$114.000</span></div>
+          <div style="font-family:Oswald,sans-serif;color:#6B6B6B;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:24px">por mes</div>
+          <ul style="list-style:none;padding:0;margin:0 0 28px;display:flex;flex-direction:column;gap:12px;flex:1">
+            <li style="display:flex;gap:10px;color:#cfcfcf;font-size:15px;line-height:1.4"><span style="color:#DCFF31">—</span>Todo lo del plan Macizo</li>
+            <li style="display:flex;gap:10px;color:#cfcfcf;font-size:15px;line-height:1.4"><span style="color:#DCFF31">—</span>Entrenador personal 2x semana</li>
+            <li style="display:flex;gap:10px;color:#cfcfcf;font-size:15px;line-height:1.4"><span style="color:#DCFF31">—</span>Plan nutricional personalizado</li>
+            <li style="display:flex;gap:10px;color:#cfcfcf;font-size:15px;line-height:1.4"><span style="color:#DCFF31">—</span>Seguimiento mensual de progreso</li>
+          </ul>
+          <a href="#reservar" style="text-align:center;font-family:Oswald,sans-serif;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;font-size:14px;color:#fff;background:transparent;text-decoration:none;padding:14px;border-radius:4px;border:1.5px solid rgba(255,255,255,0.3);transition:border-color .2s,color .2s" style-hover="border-color:#DCFF31;color:#DCFF31">Ir por todo</a>
+        </article>
+      </div>
+      <p style="text-align:center;color:#555;font-size:13px;margin-top:24px;font-family:Oswald,sans-serif;letter-spacing:0.06em">Precios en pesos argentinos · sin matrícula de inscripción</p>
+    </div>
+  </section>
+
+  <!-- ============ HORARIOS (white) ============ -->
+  <section id="horarios" style="padding:clamp(72px,9vw,120px) clamp(20px,5vw,80px);background:#fff;scroll-margin-top:72px">
+    <div class="wrap">
+      <div data-reveal style="opacity:0;transform:translateY(24px);max-width:720px;margin-bottom:48px">
+        <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.28em;text-transform:uppercase;font-size:12px;color:#111;margin-bottom:16px">Horarios</div>
+        <h2 style="font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:#111;font-size:clamp(34px,6vw,68px);line-height:0.95;letter-spacing:-0.02em;margin:0">La pizarra</h2>
+      </div>
+      <div class="sch-grid">
+        <div data-reveal style="opacity:0;transform:translateY(24px);background:#111;border-radius:6px;padding:8px 0;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 28px;border-bottom:1px solid rgba(255,255,255,0.08)">
+            <span style="font-family:Oswald,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:#fff;font-size:18px">Lunes a Viernes</span>
+            <span style="font-family:Oswald,sans-serif;font-weight:700;color:#DCFF31;font-size:20px;font-variant-numeric:tabular-nums">06:00 – 23:00</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 28px;border-bottom:1px solid rgba(255,255,255,0.08)">
+            <span style="font-family:Oswald,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:#fff;font-size:18px">Sábado</span>
+            <span style="font-family:Oswald,sans-serif;font-weight:700;color:#DCFF31;font-size:20px;font-variant-numeric:tabular-nums">08:00 – 20:00</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 28px">
+            <span style="font-family:Oswald,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:#fff;font-size:18px">Domingo</span>
+            <span style="font-family:Oswald,sans-serif;font-weight:600;color:#6B6B6B;font-size:16px;letter-spacing:0.1em;text-transform:uppercase">Cerrado</span>
+          </div>
+        </div>
+        <div data-reveal style="opacity:0;transform:translateY(24px);background:#DCFF31;border-radius:6px;padding:28px">
+          <div style="font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#111;font-size:16px;margin-bottom:18px">Clases grupales</div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="border-top:1.5px solid rgba(17,17,17,0.25);padding-top:14px">
+              <div style="font-family:Oswald,sans-serif;font-weight:600;color:#111;font-size:16px;text-transform:uppercase">Powerlifting Class</div>
+              <div style="color:#3a3a1a;font-size:14px;font-family:Oswald,sans-serif;letter-spacing:0.02em">Lun · Mié · Vie — 19:00</div>
+            </div>
+            <div style="border-top:1.5px solid rgba(17,17,17,0.25);padding-top:14px">
+              <div style="font-family:Oswald,sans-serif;font-weight:600;color:#111;font-size:16px;text-transform:uppercase">Funcional Macizo</div>
+              <div style="color:#3a3a1a;font-size:14px;font-family:Oswald,sans-serif;letter-spacing:0.02em">Mar · Jue — 18:00 y 20:00</div>
+            </div>
+            <div style="border-top:1.5px solid rgba(17,17,17,0.25);padding-top:14px">
+              <div style="font-family:Oswald,sans-serif;font-weight:600;color:#111;font-size:16px;text-transform:uppercase">Movilidad y Recuperación</div>
+              <div style="color:#3a3a1a;font-size:14px;font-family:Oswald,sans-serif;letter-spacing:0.02em">Sábado — 10:00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESERVAR ============ -->
+  <section id="reservar" style="padding:clamp(72px,9vw,120px) clamp(20px,5vw,80px);background:#111;scroll-margin-top:72px">
+    <div class="wrap" style="max-width:760px">
+      <div data-reveal style="opacity:0;transform:translateY(24px);text-align:center;margin-bottom:44px">
+        <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.28em;text-transform:uppercase;font-size:12px;color:#DCFF31;margin-bottom:16px">Reservá tu turno</div>
+        <h2 style="font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:#fff;font-size:clamp(34px,6vw,64px);line-height:0.95;letter-spacing:-0.02em;margin:0">Tu primera sesión arranca acá</h2>
+        <p style="color:#6B6B6B;font-size:16px;line-height:1.6;margin:18px auto 0;max-width:480px">Elegí actividad, día y horario. Te confirmamos por WhatsApp en el día.</p>
+      </div>
+
+      <sc-if value="{{ formVisible }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ onSubmit }}" data-reveal style="opacity:0;transform:translateY(24px);background:#1C1C1C;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:clamp(24px,4vw,40px);display:flex;flex-direction:column;gap:20px">
+          <div>
+            <label for="f-tipo" style="display:block;font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;font-size:12px;color:#DCFF31;margin-bottom:9px">Actividad</label>
+            <select id="f-tipo" value="{{ tipo }}" onChange="{{ onTipo }}" required="" style="width:100%;background:#111;border:1px solid rgba(255,255,255,0.14);border-radius:4px;color:#fff;font-size:15px;padding:14px 14px;appearance:none">
+              <option value="">Elegí una actividad…</option>
+              <option value="Musculación libre">Musculación libre</option>
+              <option value="Powerlifting Class">Powerlifting Class</option>
+              <option value="Funcional Macizo">Funcional Macizo</option>
+              <option value="Movilidad y Recuperación">Movilidad y Recuperación</option>
+              <option value="Entrenamiento personal">Entrenamiento personal</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div>
+              <label for="f-dia" style="display:block;font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;font-size:12px;color:#DCFF31;margin-bottom:9px">Día</label>
+              <select id="f-dia" value="{{ dia }}" onChange="{{ onDia }}" required="" style="width:100%;background:#111;border:1px solid rgba(255,255,255,0.14);border-radius:4px;color:#fff;font-size:15px;padding:14px 14px;appearance:none">
+                <option value="">Elegí un día…</option>
+                <option value="Lunes">Lunes</option>
+                <option value="Martes">Martes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Sábado">Sábado</option>
+              </select>
+            </div>
+            <div>
+              <label for="f-hora" style="display:block;font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;font-size:12px;color:#DCFF31;margin-bottom:9px">Horario</label>
+              <select id="f-hora" value="{{ horario }}" onChange="{{ onHorario }}" required="" style="width:100%;background:#111;border:1px solid rgba(255,255,255,0.14);border-radius:4px;color:#fff;font-size:15px;padding:14px 14px;appearance:none">
+                <option value="">{{ horarioPlaceholder }}</option>
+                <sc-for list="{{ horarios }}" as="h" hint-placeholder-count="0">
+                  <option value="{{ h }}">{{ h }}</option>
+                </sc-for>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label for="f-nombre" style="display:block;font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;font-size:12px;color:#DCFF31;margin-bottom:9px">Nombre</label>
+              <input id="f-nombre" type="text" value="{{ nombre }}" onChange="{{ onNombre }}" placeholder="Tu nombre" required="" style="width:100%;background:#111;border:1px solid rgba(255,255,255,0.14);border-radius:4px;color:#fff;font-size:15px;padding:14px 14px" />
+            </div>
+            <div>
+              <label for="f-tel" style="display:block;font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;font-size:12px;color:#DCFF31;margin-bottom:9px">Teléfono</label>
+              <input id="f-tel" type="tel" value="{{ telefono }}" onChange="{{ onTelefono }}" placeholder="299 ..." required="" style="width:100%;background:#111;border:1px solid rgba(255,255,255,0.14);border-radius:4px;color:#fff;font-size:15px;padding:14px 14px" />
+            </div>
+          </div>
+          <button type="submit" style="margin-top:6px;font-family:Oswald,sans-serif;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;font-size:16px;color:#111;background:#DCFF31;border:0;border-radius:4px;padding:17px;cursor:pointer;transition:transform .2s,box-shadow .2s" style-hover="transform:translateY(-2px);box-shadow:0 12px 32px rgba(220,255,49,0.3)">Reservar turno</button>
+        </form>
+      </sc-if>
+
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#1C1C1C;border:1px solid #DCFF31;border-radius:8px;padding:clamp(32px,5vw,52px);text-align:center">
+          <div style="width:64px;height:64px;border-radius:50%;background:#DCFF31;display:flex;align-items:center;justify-content:center;margin:0 auto 22px">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15.5 L13 21 L23 9"/></svg>
+          </div>
+          <h3 style="font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:#fff;font-size:clamp(26px,4vw,40px);letter-spacing:-0.01em;margin:0 0 12px">¡Turno reservado!</h3>
+          <p style="color:#cfcfcf;font-size:16px;line-height:1.6;margin:0 auto;max-width:420px">Te contactamos por WhatsApp para confirmar tu sesión de <span style="color:#DCFF31">{{ tipo }}</span> el <span style="color:#DCFF31">{{ dia }}</span> a las <span style="color:#DCFF31">{{ horario }}</span> hs. Prepará la mochila.</p>
+          <button onClick="{{ onReset }}" style="margin-top:28px;font-family:Oswald,sans-serif;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;font-size:14px;color:#fff;background:transparent;border:1.5px solid rgba(255,255,255,0.3);border-radius:4px;padding:13px 26px;cursor:pointer;transition:border-color .2s,color .2s" style-hover="border-color:#DCFF31;color:#DCFF31">Reservar otro turno</button>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIOS (white) ============ -->
+  <section style="padding:clamp(72px,9vw,120px) clamp(20px,5vw,80px);background:#fff">
+    <div class="wrap">
+      <div data-reveal style="opacity:0;transform:translateY(24px);max-width:720px;margin-bottom:48px">
+        <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.28em;text-transform:uppercase;font-size:12px;color:#111;margin-bottom:16px">La comunidad</div>
+        <h2 style="font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:#111;font-size:clamp(34px,6vw,68px);line-height:0.95;letter-spacing:-0.02em;margin:0">Resultados, no promesas</h2>
+      </div>
+      <div class="test-grid">
+        <figure data-reveal style="opacity:0;transform:translateY(24px);margin:0;border:1px solid #e6e6e6;border-radius:6px;padding:30px;display:flex;flex-direction:column">
+          <div style="font-family:Anton,sans-serif;color:#DCFF31;font-size:46px;line-height:0.6;height:24px">“</div>
+          <blockquote style="margin:0;color:#222;font-size:17px;line-height:1.55;font-weight:500;flex:1">Subí mi sentadilla de 90 a 180 kg en un año. Acá te enseñan a levantar con técnica, no a hacer fuerza al pedo.</blockquote>
+          <figcaption style="margin-top:22px;font-family:Oswald,sans-serif"><span style="display:block;font-weight:600;color:#111;text-transform:uppercase;letter-spacing:0.04em">Martín R.</span><span style="color:#6B6B6B;font-size:13px;letter-spacing:0.06em">Socio hace 2 años</span></figcaption>
+        </figure>
+        <figure data-reveal style="opacity:0;transform:translateY(24px);margin:0;border:1px solid #e6e6e6;border-radius:6px;padding:30px;display:flex;flex-direction:column">
+          <div style="font-family:Anton,sans-serif;color:#DCFF31;font-size:46px;line-height:0.6;height:24px">“</div>
+          <blockquote style="margin:0;color:#222;font-size:17px;line-height:1.55;font-weight:500;flex:1">Bajé 12 kg y subí mi peso muerto a 130 kg en 8 meses. La diferencia fue el seguimiento y la comunidad que te banca.</blockquote>
+          <figcaption style="margin-top:22px;font-family:Oswald,sans-serif"><span style="display:block;font-weight:600;color:#111;text-transform:uppercase;letter-spacing:0.04em">Carla M.</span><span style="color:#6B6B6B;font-size:13px;letter-spacing:0.06em">Plan Macizo</span></figcaption>
+        </figure>
+        <figure data-reveal style="opacity:0;transform:translateY(24px);margin:0;border:1px solid #e6e6e6;border-radius:6px;padding:30px;display:flex;flex-direction:column">
+          <div style="font-family:Anton,sans-serif;color:#DCFF31;font-size:46px;line-height:0.6;height:24px">“</div>
+          <blockquote style="margin:0;color:#222;font-size:17px;line-height:1.55;font-weight:500;flex:1">Competí mi primer torneo regional de powerlifting entrenando acá. Equipo serio y entrenadores que saben de fuerza real.</blockquote>
+          <figcaption style="margin-top:22px;font-family:Oswald,sans-serif"><span style="display:block;font-weight:600;color:#111;text-transform:uppercase;letter-spacing:0.04em">Diego F.</span><span style="color:#6B6B6B;font-size:13px;letter-spacing:0.06em">Plan Elite</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACTO ============ -->
+  <section id="contacto" style="padding:clamp(72px,9vw,120px) clamp(20px,5vw,80px);background:#111;border-top:1px solid rgba(255,255,255,0.05);scroll-margin-top:72px">
+    <div class="wrap">
+      <div class="contact-grid">
+        <div data-reveal style="opacity:0;transform:translateY(24px)">
+          <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.28em;text-transform:uppercase;font-size:12px;color:#DCFF31;margin-bottom:16px">Dónde estamos</div>
+          <h2 style="font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:#fff;font-size:clamp(32px,5vw,56px);line-height:0.95;letter-spacing:-0.02em;margin:0 0 28px">Vení a entrenar</h2>
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <div>
+              <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;font-size:11px;color:#6B6B6B;margin-bottom:5px">Dirección</div>
+              <div style="color:#fff;font-size:17px;line-height:1.5">Av. Argentina 1450<br/>Neuquén Capital, Neuquén</div>
+            </div>
+            <div>
+              <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;font-size:11px;color:#6B6B6B;margin-bottom:5px">Teléfono · WhatsApp</div>
+              <a href="https://wa.me/5492994567890?text=Hola!%20Quiero%20información%20sobre%20Macizo%20Gym" style="color:#DCFF31;font-size:17px;text-decoration:none;font-family:Oswald,sans-serif;font-weight:600">+54 9 299 456-7890</a>
+            </div>
+            <div>
+              <div style="font-family:Oswald,sans-serif;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;font-size:11px;color:#6B6B6B;margin-bottom:5px">Horario de atención</div>
+              <div style="color:#fff;font-size:17px;line-height:1.5">Lun a Vie 6–23 hs · Sáb 8–20 hs<br/>Domingos cerrado</div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:4px">
+              <a href="#" aria-label="Instagram" style="width:44px;height:44px;border:1px solid rgba(255,255,255,0.2);border-radius:5px;display:flex;align-items:center;justify-content:center;transition:border-color .2s" style-hover="border-color:#DCFF31"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="#fff"/></svg></a>
+              <a href="#" aria-label="Facebook" style="width:44px;height:44px;border:1px solid rgba(255,255,255,0.2);border-radius:5px;display:flex;align-items:center;justify-content:center;transition:border-color .2s" style-hover="border-color:#DCFF31"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 8h-2a2 2 0 0 0-2 2v11"/><path d="M8 13h6"/></svg></a>
+              <a href="https://wa.me/5492994567890" aria-label="WhatsApp" style="width:44px;height:44px;border:1px solid rgba(255,255,255,0.2);border-radius:5px;display:flex;align-items:center;justify-content:center;transition:border-color .2s" style-hover="border-color:#DCFF31"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-4.4A8 8 0 1 1 8 19.4z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5 .6 0 1.2-.4 1.2-1l-.1-1.1-2 -.6-1 1c-1-.5-1.8-1.3-2.3-2.3l1-1-.6-2-1.1-.1c-.6 0-1 .6-1 1.2"/></svg></a>
+            </div>
+          </div>
+        </div>
+        <div data-reveal style="opacity:0;transform:translateY(24px);position:relative;min-height:340px;border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,0.08)">
+          <iframe title="Mapa — Macizo Gym, Av. Argentina 1450, Neuquén" src="https://www.google.com/maps?q=Av.%20Argentina%201450,%20Neuqu%C3%A9n,%20Argentina&z=15&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width:100%;height:100%;min-height:340px;border:0;display:block"></iframe>
+          <div aria-hidden="true" style="position:absolute;left:18px;bottom:18px;display:flex;align-items:center;gap:9px;background:rgba(12,12,12,0.92);border:1px solid rgba(220,255,49,0.25);border-radius:5px;padding:10px 14px;backdrop-filter:blur(4px);pointer-events:none">
+            <span style="width:9px;height:9px;border-radius:50%;background:#DCFF31;box-shadow:0 0 8px #DCFF31;flex:none"></span>
+            <span style="font-family:Oswald,sans-serif;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#fff;font-size:13px">Av. Argentina 1450 · Neuquén</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="background:#0c0c0c;border-top:2px solid #DCFF31;padding:clamp(48px,7vw,72px) clamp(20px,5vw,80px) 32px">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:11px;margin-bottom:18px">
+            <img src="assets/logo.png" alt="Macizo Gym" style="height:46px;width:46px;border-radius:50%" />
+            <span style="font-family:Oswald,sans-serif;font-weight:700;letter-spacing:0.04em;color:#fff;font-size:20px">MACIZO <span style="color:#DCFF31">GYM</span></span>
+          </div>
+          <p style="color:#6B6B6B;font-size:14.5px;line-height:1.6;max-width:300px;margin:0">Musculación y powerlifting en Neuquén. Hierro, técnica y comunidad. Vení a ponerte macizo.</p>
+        </div>
+        <div>
+          <div style="font-family:Oswald,sans-serif;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#fff;font-size:13px;margin-bottom:16px">Navegación</div>
+          <div style="display:flex;flex-direction:column;gap:11px">
+            <a href="#inicio" style="color:#9a9a9a;font-size:14.5px;text-decoration:none">Inicio</a>
+            <a href="#planes" style="color:#9a9a9a;font-size:14.5px;text-decoration:none">Planes y precios</a>
+            <a href="#servicios" style="color:#9a9a9a;font-size:14.5px;text-decoration:none">Servicios</a>
+            <a href="#horarios" style="color:#9a9a9a;font-size:14.5px;text-decoration:none">Horarios</a>
+            <a href="#reservar" style="color:#9a9a9a;font-size:14.5px;text-decoration:none">Reservar clase</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:Oswald,sans-serif;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#fff;font-size:13px;margin-bottom:16px">Contacto</div>
+          <div style="display:flex;flex-direction:column;gap:11px">
+            <span style="color:#9a9a9a;font-size:14.5px">Av. Argentina 1450, Neuquén</span>
+            <a href="https://wa.me/5492994567890" style="color:#DCFF31;font-size:14.5px;text-decoration:none">+54 9 299 456-7890</a>
+            <span style="color:#9a9a9a;font-size:14.5px">Lun–Vie 6–23 · Sáb 8–20</span>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,0.08);margin-top:40px;padding-top:22px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between">
+        <span style="color:#555;font-size:12.5px;font-family:Oswald,sans-serif;letter-spacing:0.04em">© 2026 Macizo Gym · Neuquén, Argentina</span>
+        <span style="color:#555;font-size:12.5px;font-family:Oswald,sans-serif;letter-spacing:0.04em">Hecho con fierro y disciplina</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp float -->
+  <a href="https://wa.me/5492994567890?text=Hola!%20Quiero%20información%20sobre%20Macizo%20Gym" aria-label="Escribinos por WhatsApp" style="position:fixed;bottom:22px;right:22px;z-index:55;width:58px;height:58px;border-radius:50%;background:#DCFF31;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,0.4),0 0 0 0 rgba(220,255,49,0.5);transition:transform .2s ease,box-shadow .2s ease" style-hover="transform:translateY(-3px) scale(1.05);box-shadow:0 16px 40px rgba(220,255,49,0.4)">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="#111"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.13c-.24.68-1.42 1.31-1.96 1.36-.5.05-1.13.07-1.83-.11-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.8-4.17-4.94-4.36-.15-.19-1.19-1.58-1.19-3.02s.75-2.14 1.02-2.44c.27-.3.59-.37.78-.37.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.59.83 2.03.9 2.18.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.42.49-.14.13-.28.28-.12.55.16.27.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.21 1.37.27.13.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.22.6-.13.25.09 1.58.74 1.85.88.27.13.45.2.51.31.07.11.07.64-.17 1.32z"/></svg>
+  </a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = {
+    kilos: 0,
+    menuOpen: false,
+    tipo: '', dia: '', horario: '', nombre: '', telefono: '',
+    submitted: false,
+  };
+
+  componentDidMount() {
+    const target = 1284750;
+    const dur = 2400;
+    const t0 = performance.now();
+    const ease = (x) => 1 - Math.pow(1 - x, 3);
+    this._countTimer = setInterval(() => {
+      const p = Math.min(1, (performance.now() - t0) / dur);
+      this.setState({ kilos: Math.round(target * ease(p)) });
+      if (p >= 1) clearInterval(this._countTimer);
+    }, 33);
+    // Safety net in case timers are throttled: land on the final number.
+    this._countDone = setTimeout(() => {
+      clearInterval(this._countTimer);
+      this.setState({ kilos: target });
+    }, dur + 400);
+
+    const nav = document.getElementById('site-nav');
+    const revealCheck = () => {
+      const h = window.innerHeight || document.documentElement.clientHeight;
+      document.querySelectorAll('[data-reveal]:not(.is-revealed)').forEach((el) => {
+        if (el.getBoundingClientRect().top < h * 0.92) el.classList.add('is-revealed');
+      });
+    };
+    this._onScroll = () => {
+      const s = window.scrollY > 40;
+      if (nav) {
+        nav.style.backgroundColor = s ? 'rgba(12,12,12,0.92)' : 'rgba(17,17,17,0.35)';
+        nav.style.borderBottomColor = s ? 'rgba(220,255,49,0.18)' : 'rgba(255,255,255,0.06)';
+        nav.style.backdropFilter = s ? 'blur(14px)' : 'blur(6px)';
+        nav.style.webkitBackdropFilter = s ? 'blur(14px)' : 'blur(6px)';
+      }
+      revealCheck();
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('resize', revealCheck, { passive: true });
+    this._revealCheck = revealCheck;
+    this._onScroll();
+    requestAnimationFrame(revealCheck);
+    // Safety net: never leave content hidden if scroll never happens.
+    this._revealTimer = setTimeout(() => {
+      document.querySelectorAll('[data-reveal]:not(.is-revealed)').forEach((el) => el.classList.add('is-revealed'));
+    }, 2600);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._countTimer);
+    clearTimeout(this._countDone);
+    clearTimeout(this._revealTimer);
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('resize', this._revealCheck);
+  }
+
+  horariosFor(dia) {
+    if (!dia) return [];
+    if (dia === 'Sábado') return ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00'];
+    return ['06:00', '08:00', '10:00', '13:00', '17:00', '19:00', '21:00'];
+  }
+
+  set(field) {
+    return (e) => {
+      const v = e.target.value;
+      if (field === 'dia') this.setState({ dia: v, horario: '' });
+      else this.setState({ [field]: v });
+    };
+  }
+
+  renderVals() {
+    return {
+      kilosDisplay: this.state.kilos.toLocaleString('es-AR'),
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      tipo: this.state.tipo,
+      dia: this.state.dia,
+      horario: this.state.horario,
+      nombre: this.state.nombre,
+      telefono: this.state.telefono,
+      horarios: this.horariosFor(this.state.dia),
+      horarioPlaceholder: this.state.dia ? 'Elegí un horario…' : 'Primero elegí el día',
+      onTipo: this.set('tipo'),
+      onDia: this.set('dia'),
+      onHorario: this.set('horario'),
+      onNombre: this.set('nombre'),
+      onTelefono: this.set('telefono'),
+      onSubmit: (e) => {
+        e.preventDefault();
+        const s = this.state;
+        if (!s.tipo || !s.dia || !s.horario || !s.nombre || !s.telefono) return;
+        this.setState({ submitted: true });
+      },
+      onReset: () => this.setState({ tipo: '', dia: '', horario: '', nombre: '', telefono: '', submitted: false }),
+      submitted: this.state.submitted,
+      formVisible: !this.state.submitted,
+    };
+  }
+}
+</script>
+</body>
+</html>
